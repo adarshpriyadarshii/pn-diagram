@@ -11,9 +11,9 @@ function OutputTab({activities,setActivities}) {
 
     const handleChange=()=>{
         console.log(activities)
-        setActivities([]);
+        //setActivities([]);
         console.log(activities)
-        navigate('/')
+        navigate('/algo')
     }
 
     const edges = activities.flatMap((activity, index) => {

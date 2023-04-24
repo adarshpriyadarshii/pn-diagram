@@ -20,7 +20,7 @@ function forpass(x, par) {
 
   if (m5[x] !== 0) {
     let max1 = 0;
-    for (let k = 0; k < v2[[x, par]].length; k++) {
+    for (let k = 0; k < v2[[x, par]]?.length; k++) {
       if (v2[[x, par]][k][0] === "FF") {
         max1 = Math.max(max1, v2[[x, par]][k][1] + v7[par][2] - dura[x]);
       }
@@ -35,18 +35,18 @@ function forpass(x, par) {
       }
     }
 
-    if (v2[[x, par]].length === 0) {
+    if (v2[[x, par]]?.length === 0) {
       v9[x].push(v7[par][2]);
     } else {
       v9[x].push(max1);
     }
-    if (v9[x].length !== m5[x]) {
+    if (v9[x]?.length !== m5[x]) {
       return;
     }
   }
   if (m5[x] !== 0) {
     let max1 = 0;
-    for (let i = 0; i < v9[x].length; i++) {
+    for (let i = 0; i < v9[x]?.length; i++) {
       max1 = Math.max(max1, v9[x][i]);
     }
     v7[x][0] = max1;
@@ -55,8 +55,8 @@ function forpass(x, par) {
   v7[x][2] = v7[x][0] + v7[x][1];
   vis.set(x, 1);
 
-  for (let i = 0; i < v1[x].length; i++) {
-    if (v1[x].length - m5[x] === 0) {
+  for (let i = 0; i < v1[x]?.length; i++) {
+    if (v1[x]?.length - m5[x] === 0) {
       las.push(x);
     }
     if (vis[v1[x][i]] === 1) {
@@ -72,7 +72,7 @@ function backpass(x, par, no) {
   }
   if (par !== no && par !== -1) {
     let min1 = Infinity;
-    for (let k = 0; k < v2[[x, par]].length; k++) {
+    for (let k = 0; k < v2[[x, par]]?.length; k++) {
       if (v2[[x, par]][k][0] === "FF") {
         min1 = Math.min(min1, -v2[[x, par]][k][1] + v7[par][5]);
       }
@@ -86,25 +86,25 @@ function backpass(x, par, no) {
         min1 = Math.min(min1, -v2[[x, par]][k][1] + v7[par][3] + dura[x]);
       }
     }
-    if (v2[[x, par]].length === 0) {
+    if (v2[[x, par]]?.length === 0) {
       v9[x].push(v7[par][3]);
     } else {
       v9[x].push(min1);
     }
-    if (v9[x].length !== m9[x]) {
+    if (v9[x]?.length !== m9[x]) {
       return;
     }
   }
   if (par !== no && par !== -1) {
     let min1 = Infinity;
-    for (let i = 0; i < v9[x].length; i++) {
+    for (let i = 0; i < v9[x]?.length; i++) {
       min1 = Math.min(min1, v9[x][i]);
     }
     v7[x][5] = min1;
   }
   v7[x][3] = v7[x][5] - v7[x][1];
   vis[x] = 1;
-  for (let i = 0; i < v1[x].length; i++) {
+  for (let i = 0; i < v1[x]?.length; i++) {
     if (vis[v1[x][i]] === 1) {
       continue;
     }
@@ -114,7 +114,7 @@ function backpass(x, par, no) {
 
 function Algorithm({activities,setActivities}) {
 
-  let node=activities.length, i, dur, rel, j, dep;
+  let node=activities?.length, i, dur, rel, j, dep;
 //   console.log(" Hello , A Warm Welcome to PN Predictor ");
 //   console.log(" Please Enter the number of nodes ");
 //   node = parseInt(prompt());
@@ -181,17 +181,17 @@ function Algorithm({activities,setActivities}) {
      if(i>node){
          m9[i]=0;
      }else{
-       m9[i] = v1[i].length - m5[i];  
+       m9[i] = v1[i]?.length - m5[i];  
      }
     
-    console.log(i + " node " + m9[i]);
+    //console.log(i + " node " + m9[i]);
     for (j = 0; j < 6; j++) {
       v7[i].push(0);
     }
   }
   forpass(0, -1);
   vis.clear();
-  for (i = 0; i < las.length; i++) {
+  for (i = 0; i < las?.length; i++) {
     v1[las[i]].push(node + 2);
     v1[node + 2].push(las[i]);
   }
@@ -199,14 +199,20 @@ function Algorithm({activities,setActivities}) {
     v9[i] = [];
   }
   backpass(node + 2, -1, node + 2);
-  for (i = 0; i < node; i++) {
-    console.log(" for " + i + " node zero ind " + "Early Start:- " + v7[i][0] + " Duration " + v7[i][1] + " Early Finish " + v7[i][2] + " Latest Start " + v7[i][3] + " Latest Finish " + v7[i][5]);
+
+  const btn=()=>{
+    for (i = 0; i < node; i++) {
+      console.log(" for " + i + " node zero ind " + "Early Start:- " + v7[i][0] + " Duration " + v7[i][1] + " Early Finish " + v7[i][2] + " Latest Start " + v7[i][3] + " Latest Finish " + v7[i][5]);
+    }
   }
+  // for (i = 0; i < node; i++) {
+  //   console.log(" for " + i + " node zero ind " + "Early Start:- " + v7[i][0] + " Duration " + v7[i][1] + " Early Finish " + v7[i][2] + " Latest Start " + v7[i][3] + " Latest Finish " + v7[i][5]);
+  // }
 
   return (
     <>
         <div>Algorithm</div>
-        <Button >Click</Button>
+        <Button onClick={()=>btn}>Click</Button>
     </>
     
   )
