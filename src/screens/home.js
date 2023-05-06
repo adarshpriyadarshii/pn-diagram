@@ -9,7 +9,8 @@ import Algorithm from '../components/pnDiagram/algorithm'
 
 function Home() {
   const [activities,setActivities]=useState([]);
-  const props={activities,setActivities}
+  const [data,setData]=useState([]);
+  const props={activities,setActivities,data,setData}
   return (
     <BrowserRouter>
         <Routes>

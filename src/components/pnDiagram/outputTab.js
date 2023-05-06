@@ -1,21 +1,26 @@
 import { Button } from '@mui/material';
 import React from 'react'
 import { useState } from 'react';
+import {Grid,Box,Stack} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ReactFlow, { Controls, Background } from 'reactflow';
 import 'reactflow/dist/style.css';
 
 
-function OutputTab({activities,setActivities}) {
+function OutputTab({activities,setActivities,data,setData}) {
     let navigate=useNavigate();
 
     const handleChange=()=>{
         console.log(activities)
-        //setActivities([]);
-        console.log(activities)
-        navigate('/algo')
+        setActivities([]);
+        console.log(data)
+        setData([]);
+        console.log(data)
+        navigate('/')
     }
 
+    const data1=data;
+    
     const edges = activities.flatMap((activity, index) => {
         return activity.rel?.map((source) => {
             return {
@@ -36,9 +41,45 @@ function OutputTab({activities,setActivities}) {
     const nodes = activities.map((activity, index) => {
         return {
             id: activity.name,
-            data: { label: activity.name },
+            type: 'default',
+            className: 'annotation',
+            data: {
+            label: (
+                <Box padding={0}>
+                {activity.name}
+                <br></br>
+                Duration : {activity.duration}
+                 {
+                    data1.filter((data)=>data.name==activity.name).map((data1)=>{
+                        return(
+                            <Box sx={{ width: '100%' }}>
+                                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} key={data1.name}>
+                                        <Grid item xs={12}>
+                                         Float : {parseInt(data1.LS - data1.ES)}
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                        ES : {data1.ES}
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                        EF : {data1.EF}
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                        LF : {data1.LF}
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                        LS : {data1.LS}
+                                        </Grid>
+                                </Grid>        
+                            </Box>
+                    )  
+                    })
+                }
+                
+                </Box>
+            ),
+            },
             position: { 
-                x: index % 2 === 0 ? index * 100 : -(index * 100), 
+                x: index % 2 === 0 ? -(index * 200) : (index * 200), 
                 y: index * 100 
             },
             
@@ -47,10 +88,11 @@ function OutputTab({activities,setActivities}) {
     
   return (
     <>
-        <div>
-            <h1 onClick={handleChange}>Output</h1>
-            <button onClick={()=>console.log(activities.length)}>Click</button>
-        </div>
+        
+        <h1 margin={2}>Output</h1>
+        <Box display="flex" justifyContent="center" alignItems="center" margin='15px'>
+            <Button onClick={()=>handleChange()} variant="contained">Try Another Input</Button>
+        </Box>
         <div style={{ width: '100%', height: '90vh'}}>
         <ReactFlow nodes={nodes} edges={edges} fitView>
             <Background />

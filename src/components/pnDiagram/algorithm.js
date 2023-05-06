@@ -1,5 +1,6 @@
-import React from 'react'
-import { Button } from '@mui/material';
+import React,{useState} from 'react'
+import { Button, Box,Typography,CircularProgress,Stack } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const v7 = new Array(10000).fill([]).map(() => new Array(3).fill(0));
 const v9 = new Array(10000).fill([]).map(() => new Array());
@@ -112,107 +113,112 @@ function backpass(x, par, no) {
   }
 }
 
-function Algorithm({activities,setActivities}) {
+function Algorithm({activities,setActivities,data,setData}) {
+  let navigate=useNavigate();
 
-  let node=activities?.length, i, dur, rel, j, dep;
-//   console.log(" Hello , A Warm Welcome to PN Predictor ");
-//   console.log(" Please Enter the number of nodes ");
-//   node = parseInt(prompt());
-{
-    activities.map((activity,index)=>{
-        dur=activity.duration;
-        dura[index]=dur;
-        m6[index]=dur;
-    })
-}
-//   for (i = 0; i < node; i++) {
-//     console.log("Enter the duration of " + (i + 1) + " node");
-//     dur = parseInt(prompt());
-//     dura[i] = dur;
-//     m6[i] = dur;
-//   }
-{
-    activities.map((activity,index)=>{
-        rel=activity.no_dependencies;
-        m5[index]=rel;
-        {
-          activity.rel?.map((source,idx)=>{
-            dep=idx;
-            v1[index].push(dep);
-            v1[dep].push(index);
-            let v4 = [];
-            {source.ff?v4.push(["FF",source.ff_dur]):v4.push(null)}
-            {source.fs?v4.push(["FS",source.fs_dur]):v4.push(null)}
-            {source.sf?v4.push(["SF",source.sf_dur]):v4.push(null)}
-            {source.ss?v4.push(["SS",source.ss_dur]):v4.push(null)}
-            v2[[index,idx]]=v4;
-            v2[[idx,index]]=v4;
-          })
-        }
-    })
-}
-  // for (i = 0; i < node; i++) {
-  //   // console.log(" Enter the number of nodes  on which " + (i + 1) + "  depends upon");
-  //   // rel = parseInt(prompt());
-  //   // m5[i] = rel;
-  //   console.log("Enter the node on which it depends :-");
-  //   for (j = 0; j < rel; j++) {
-  //     console.log(j + 1 + " node:- ");
-  //     dep = parseInt(prompt());
-  //     v1[i].push(dep);
-  //     v1[dep].push(i);
-  //     console.log("Enter the number of Precedence Relationship");
-  //     prel = parseInt(prompt());
-  //     let v4 = [];
-  //     for (k = 0; k < prel; k++) {
-  //       console.log("Enter " + (k + 1) + " relation");
-  //       x = prompt();
-  //       y = parseInt(prompt());
-        
-  //       v4.push([x, y]);
-  //     }
-  //     v2[[i, dep]] = v4;
-  //     v2[[dep, i]] = v4;
-      
-  //   }
-  // }
-  let v6 = [];
-  for (i = 0; i <= node + 3; i++) {
-     if(i>node){
-         m9[i]=0;
-     }else{
-       m9[i] = v1[i]?.length - m5[i];  
-     }
-    
-    //console.log(i + " node " + m9[i]);
-    for (j = 0; j < 6; j++) {
-      v7[i].push(0);
-    }
-  }
-  forpass(0, -1);
-  vis.clear();
-  for (i = 0; i < las?.length; i++) {
-    v1[las[i]].push(node + 2);
-    v1[node + 2].push(las[i]);
-  }
-  for (i = 0; i <= node + 3; i++) {
-    v9[i] = [];
-  }
-  backpass(node + 2, -1, node + 2);
+  const [output,setOutput]=useState([]);
 
-  const btn=()=>{
+  const algo=(activities)=>{
+    let node, i, dur, rel, j, dep, prel, k, y;
+    let x;
+    console.log(" Hello , A Warm Welcome to PN Predictor ");
+    console.log(" Please Enter the number of nodes ");
+    //node = parseInt(prompt());
+    node=activities.length
+    console.log(node)
     for (i = 0; i < node; i++) {
+      console.log("Enter the duration of " + (i + 1) + " node");
+      //dur = parseInt(prompt());
+      //console.log(parseInt(activities[i].name.charCodeAt(0))-65)
+      dur = parseInt(activities[i].duration);
+      console.log(dur)
+      dura[i] = dur;
+      m6[i] = dur;
+    }
+    for (i = 0; i < node; i++) {
+      console.log(" Enter the number of nodes  on which " + (i + 1) + "  depends upon");
+      //rel = parseInt(prompt());
+      rel = parseInt(activities[i].no_dependencies);
+      console.log(rel)
+      m5[i] = rel;
+      console.log("Enter the node on which it depends :-");
+      for (j = 0; j < rel; j++) {
+        console.log(j + 1 + " node:- ");
+        //dep = parseInt(prompt());
+        dep = parseInt(activities[i].rel[j].name.charCodeAt(0))-65;
+        v1[i].push(dep);
+        v1[dep].push(i);
+        console.log("Enter the number of Precedence Relationship");
+        //prel = parseInt(prompt());
+        let v4 = [];
+        // for (k = 0; k < prel; k++) {
+        //   console.log("Enter " + (k + 1) + " relation");
+        //   x = prompt();
+        //   y = parseInt(prompt());
+        //   v4.push([x, y]);
+        // }
+        if(activities[i].rel[j].ff){v4.push(["FF",parseInt(activities[i].rel[j].ff_dur)])}
+        if(activities[i].rel[j].fs){v4.push(["FS",parseInt(activities[i].rel[j].fs_dur)])}
+        if(activities[i].rel[j].sf){v4.push(["SF",parseInt(activities[i].rel[j].sf_dur)])}
+        if(activities[i].rel[j].ss){v4.push(["SS",parseInt(activities[i].rel[j].ss_dur)])}
+        v2[[i, dep]] = v4;
+        v2[[dep, i]] = v4;
+      }
+    }
+    let v6 = [];
+    for (i = 0; i <= node + 3; i++) {
+      m9[i] = v1[i].length - m5[i];
+      for (j = 0; j < 6; j++) {
+        v7[i].push(0);
+      }
+    }
+    forpass(0, -1);
+    vis.clear();
+    for (i = 0; i < las.length; i++) {
+      v1[las[i]].push(node + 2);
+      v1[node + 2].push(las[i]);
+    }
+    for (i = 0; i <= node + 3; i++) {
+      v9[i] = [];
+    }
+    backpass(node + 2, -1, node + 2);
+    for (i = 0; i < node; i++) {
+      const newOutput={
+        name:String.fromCharCode(i+65),
+        EF:v7[i][2],
+        ES:v7[i][0],
+        LF:v7[i][5],
+        LS:v7[i][3],
+      }
+      setOutput([...output,newOutput])
       console.log(" for " + i + " node zero ind " + "Early Start:- " + v7[i][0] + " Duration " + v7[i][1] + " Early Finish " + v7[i][2] + " Latest Start " + v7[i][3] + " Latest Finish " + v7[i][5]);
     }
   }
-  // for (i = 0; i < node; i++) {
-  //   console.log(" for " + i + " node zero ind " + "Early Start:- " + v7[i][0] + " Duration " + v7[i][1] + " Early Finish " + v7[i][2] + " Latest Start " + v7[i][3] + " Latest Finish " + v7[i][5]);
-  // }
-
+  const fn=()=>{
+    setData(output);
+    setOutput([]);
+    navigate('/output')
+  }
   return (
     <>
-        <div>Algorithm</div>
-        <Button onClick={()=>btn}>Click</Button>
+        <Typography variant='h3' marginLeft='15px'>
+            Confirmation Page
+        </Typography>
+        <Box display="flex" justifyContent="center" alignItems="center" >
+          <Stack direction='column'>
+            <Box display="flex" justifyContent="center" alignItems="center" marginBottom='15px'>
+              <CircularProgress color="inherit"/>
+            </Box>
+            <Stack direction='row'>
+            <Box display="flex" justifyContent="center" alignItems="center" margin='15px'>
+              <Button onClick={()=>algo(activities)} variant="contained">Run the Algorithm</Button>
+            </Box>
+            <Box display="flex" justifyContent="center" alignItems="center" margin='15px'>
+              <Button onClick={()=>fn()} variant="contained">Show Plot</Button>
+            </Box>
+            </Stack>
+          </Stack>
+        </Box>
     </>
     
   )

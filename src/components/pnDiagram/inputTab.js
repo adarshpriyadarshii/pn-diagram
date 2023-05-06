@@ -69,7 +69,7 @@ export default function InputTab({activities,setActivities}) {
 
     const showNodes=()=>{
         console.log(activities);
-        navigate('/output')
+        navigate('/algo')
     }
 
   return (
