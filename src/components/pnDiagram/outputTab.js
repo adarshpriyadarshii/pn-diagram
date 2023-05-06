@@ -45,18 +45,19 @@ function OutputTab({activities,setActivities,data,setData}) {
             className: 'annotation',
             data: {
             label: (
-                <Box padding={0}>
-                {activity.name}
-                <br></br>
-                Duration : {activity.duration}
+                <>
+                <h1>{activity.name}</h1>
+                <h3>Duration : {activity.duration}</h3>
+                
                  {
                     data1.filter((data)=>data.name==activity.name).map((data1)=>{
                         return(
-                            <Box sx={{ width: '100%' }}>
-                                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} key={data1.name}>
+                            <Box sx={{ width: '100%' }} key={data1.name}>
+                                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} >
                                         <Grid item xs={12}>
-                                         Float : {parseInt(data1.LS - data1.ES)}
+                                        Float: {parseInt(data1.LS-data1.ES)}
                                         </Grid>
+                                        
                                         <Grid item xs={6}>
                                         ES : {data1.ES}
                                         </Grid>
@@ -64,10 +65,11 @@ function OutputTab({activities,setActivities,data,setData}) {
                                         EF : {data1.EF}
                                         </Grid>
                                         <Grid item xs={6}>
-                                        LF : {data1.LF}
+                                        LS : {data1.LS}
+                                        
                                         </Grid>
                                         <Grid item xs={6}>
-                                        LS : {data1.LS}
+                                        LF : {data1.LF}
                                         </Grid>
                                 </Grid>        
                             </Box>
@@ -75,7 +77,7 @@ function OutputTab({activities,setActivities,data,setData}) {
                     })
                 }
                 
-                </Box>
+                </>
             ),
             },
             position: { 

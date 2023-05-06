@@ -12,6 +12,7 @@ const m9 = new Map();
 const v = new Array(100).fill([]).map(() => new Array());
 const v1 = new Array(100).fill([]).map(() => new Array());
 const las = [];
+
 const v2 = new Map();
 
 function forpass(x, par) {
@@ -121,34 +122,34 @@ function Algorithm({activities,setActivities,data,setData}) {
   const algo=(activities)=>{
     let node, i, dur, rel, j, dep, prel, k, y;
     let x;
-    console.log(" Hello , A Warm Welcome to PN Predictor ");
-    console.log(" Please Enter the number of nodes ");
+    //console.log(" Hello , A Warm Welcome to PN Predictor ");
+    //console.log(" Please Enter the number of nodes ");
     //node = parseInt(prompt());
     node=activities.length
-    console.log(node)
+    //console.log(node)
     for (i = 0; i < node; i++) {
-      console.log("Enter the duration of " + (i + 1) + " node");
+      //console.log("Enter the duration of " + (i + 1) + " node");
       //dur = parseInt(prompt());
       //console.log(parseInt(activities[i].name.charCodeAt(0))-65)
       dur = parseInt(activities[i].duration);
-      console.log(dur)
+      //console.log(dur)
       dura[i] = dur;
       m6[i] = dur;
     }
     for (i = 0; i < node; i++) {
-      console.log(" Enter the number of nodes  on which " + (i + 1) + "  depends upon");
+      //console.log(" Enter the number of nodes  on which " + (i + 1) + "  depends upon");
       //rel = parseInt(prompt());
       rel = parseInt(activities[i].no_dependencies);
-      console.log(rel)
+      //console.log(rel)
       m5[i] = rel;
-      console.log("Enter the node on which it depends :-");
+      //console.log("Enter the node on which it depends :-");
       for (j = 0; j < rel; j++) {
-        console.log(j + 1 + " node:- ");
+        //console.log(j + 1 + " node:- ");
         //dep = parseInt(prompt());
         dep = parseInt(activities[i].rel[j].name.charCodeAt(0))-65;
         v1[i].push(dep);
         v1[dep].push(i);
-        console.log("Enter the number of Precedence Relationship");
+        //console.log("Enter the number of Precedence Relationship");
         //prel = parseInt(prompt());
         let v4 = [];
         // for (k = 0; k < prel; k++) {
@@ -182,6 +183,7 @@ function Algorithm({activities,setActivities,data,setData}) {
       v9[i] = [];
     }
     backpass(node + 2, -1, node + 2);
+    var a=[];
     for (i = 0; i < node; i++) {
       const newOutput={
         name:String.fromCharCode(i+65),
@@ -190,14 +192,21 @@ function Algorithm({activities,setActivities,data,setData}) {
         LF:v7[i][5],
         LS:v7[i][3],
       }
-      setOutput([...output,newOutput])
+      //console.log(newOutput)
+      a.push(newOutput)
+      //setOutput([...output,newOutput])
+      //console.log(a)
+      //console.log(output)
       console.log(" for " + i + " node zero ind " + "Early Start:- " + v7[i][0] + " Duration " + v7[i][1] + " Early Finish " + v7[i][2] + " Latest Start " + v7[i][3] + " Latest Finish " + v7[i][5]);
     }
-  }
-  const fn=()=>{
-    setData(output);
+    console.log(data);
+    setData(a);
+    console.log(a);
+    console.log(data);
+    a=[];
     setOutput([]);
-    navigate('/output')
+    navigate('/output');
+    
   }
   return (
     <>
@@ -209,14 +218,11 @@ function Algorithm({activities,setActivities,data,setData}) {
             <Box display="flex" justifyContent="center" alignItems="center" marginBottom='15px'>
               <CircularProgress color="inherit"/>
             </Box>
-            <Stack direction='row'>
+            
             <Box display="flex" justifyContent="center" alignItems="center" margin='15px'>
               <Button onClick={()=>algo(activities)} variant="contained">Run the Algorithm</Button>
             </Box>
-            <Box display="flex" justifyContent="center" alignItems="center" margin='15px'>
-              <Button onClick={()=>fn()} variant="contained">Show Plot</Button>
-            </Box>
-            </Stack>
+            
           </Stack>
         </Box>
     </>
